@@ -3,8 +3,8 @@ import { Opfs } from "@/Opfs";
 import { uuid } from "@/utils/uuid";
 import { createRegisteredClient, createSigner } from "./helpers";
 
-describe.sequential("Opfs", () => {
-  describe.sequential("with no files", () => {
+describe("Opfs", () => {
+  describe("with no files", () => {
     let opfs: Opfs;
 
     beforeEach(async () => {
@@ -45,7 +45,7 @@ describe.sequential("Opfs", () => {
     });
   });
 
-  describe.sequential("with a client database", () => {
+  describe("with a client database", () => {
     const dbPaths: string[] = [];
 
     it("should list files and get file count", async () => {

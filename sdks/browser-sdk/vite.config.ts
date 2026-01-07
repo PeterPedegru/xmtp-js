@@ -1,14 +1,10 @@
 import { playwright } from "@vitest/browser-playwright";
-import { defineConfig, mergeConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { defineConfig as defineVitestConfig } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
-const viteConfig = defineConfig({
+export default defineConfig({
   plugins: [tsconfigPaths()],
-});
-
-const vitestConfig = defineVitestConfig({
   optimizeDeps: {
     exclude: ["@xmtp/wasm-bindings"],
   },
@@ -21,11 +17,20 @@ const vitestConfig = defineVitestConfig({
       instances: [
         {
           browser: "chromium",
+          exclude: ["test/Opfs.test.ts"],
+        },
+        // run OPFS tests in a separate browser context to avoid conflicts
+        // with shared OPFS storage
+        {
+          browser: "chromium",
+          name: "OPFS",
+          include: ["test/Opfs.test.ts"],
+          sequencer: {
+            concurrent: false,
+          },
         },
       ],
     },
     testTimeout: 120000,
   },
 });
-
-export default mergeConfig(viteConfig, vitestConfig);
